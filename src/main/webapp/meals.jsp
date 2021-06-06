@@ -18,6 +18,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
+<a href="meals?action=add">Add meal</a>
 <hr>
 <table border="1" cellpadding="5" cellspacing="0">
     <thead>
@@ -25,6 +26,9 @@
         <th>Date</th>
         <th>Description</th>
         <th>Calories</th>
+        <th></th>
+        <th></th>
+
     </thead>
     </tr>
     <c:forEach items="${listMeal}" var="meal">
@@ -39,6 +43,12 @@
             </td>
             <td>
                     ${meal.calories}
+            </td>
+            <td>
+                <a href="meals?action=edit&mealId=${meal.id}">Update</a>
+            </td>
+            <td>
+                <a href="meals?action=delete&mealId=${meal.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>
