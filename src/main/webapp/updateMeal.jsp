@@ -18,7 +18,7 @@
 <hr>
 <form method="POST" action='meals' name="frmAddMeal">
 
-    Meal ID : <input type="hidden" readonly="readonly" name="mealid"
+     <input type="hidden" readonly="readonly" name="mealid"
                      value="${meal.id}"/> <br/>
     DateTime : <input
         type="datetime-local" name="dateTime"
