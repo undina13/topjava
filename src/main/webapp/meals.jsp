@@ -18,7 +18,7 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<a href="meals?action=add">Add meal</a>
+<a href="meals?action=Add">Add meal</a>
 <hr>
 <table border="1" cellpadding="5" cellspacing="0">
     <thead>
@@ -36,7 +36,7 @@
         <tr class="${meal.excess ? "red" : "green"}">
             <td>
                 <fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parsedDate"/>
-                <fmt:formatDate value="${parsedDate}" pattern="yyyy.MM.dd HH:mm"/>
+                <fmt:formatDate value="${parsedDate}" pattern="yyyy-MM-dd HH:mm"/>
             </td>
             <td>
                     ${meal.description}
@@ -45,7 +45,7 @@
                     ${meal.calories}
             </td>
             <td>
-                <a href="meals?action=edit&mealId=${meal.id}">Update</a>
+                <a href="meals?action=Edit&mealId=${meal.id}">Update</a>
             </td>
             <td>
                 <a href="meals?action=delete&mealId=${meal.id}">Delete</a>

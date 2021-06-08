@@ -32,7 +32,6 @@ public class MealServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("redirect to meals");
-        String forward = "";
         String action = (request.getParameter("action") != null) ? request.getParameter("action") : "null";
         switch (action) {
             case ("delete"):
@@ -40,23 +39,20 @@ public class MealServlet extends HttpServlet {
                 dao.delete(Integer.parseInt(request.getParameter("mealId")));
                 response.sendRedirect("meals");
                 break;
-            case ("edit"):
+            case ("Edit"):
                 log.debug("edit meal");
-                forward = INSERT_OR_EDIT;
                 Meal meal = dao.getById(Integer.parseInt(request.getParameter("mealId")));
                 request.setAttribute("meal", meal);
-                request.getRequestDispatcher(forward).forward(request, response);
+                request.getRequestDispatcher(INSERT_OR_EDIT).forward(request, response);
                 break;
-            case ("add"):
+            case ("Add"):
                 log.debug("add meal");
-                forward = INSERT_OR_EDIT;
-                request.getRequestDispatcher(forward).forward(request, response);
+                request.getRequestDispatcher(INSERT_OR_EDIT).forward(request, response);
                 break;
             default:
                 log.debug("mealList all or meal wrong action");
                 request.setAttribute("listMeal", MealsUtil.filteredByStreams(dao.getAll(), LocalTime.MIN, LocalTime.MAX, MealsUtil.NORMAL_CALORIES));
-                forward = LIST_MEAL;
-                request.getRequestDispatcher(forward).forward(request, response);
+                request.getRequestDispatcher(LIST_MEAL).forward(request, response);
         }
     }
 
@@ -80,5 +76,4 @@ public class MealServlet extends HttpServlet {
         }
         response.sendRedirect("meals");
     }
-
 }
