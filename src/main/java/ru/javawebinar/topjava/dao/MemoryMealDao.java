@@ -3,20 +3,17 @@ package ru.javawebinar.topjava.dao;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DaoMealMap implements DaoMeal {
+public class MemoryMealDao implements MealDao {
     public static AtomicInteger count = new AtomicInteger(0);
     private final Map<Integer, Meal> mealMap = new ConcurrentHashMap<>();
 
-    public DaoMealMap() {
+    public MemoryMealDao() {
         for (Meal meal : MealsUtil.meals) {
             add(meal);
         }
@@ -30,13 +27,17 @@ public class DaoMealMap implements DaoMeal {
     }
 
     @Override
-    public void delete(int mealID) {
-        mealMap.remove(mealID);
+    public void delete(int id) {
+        mealMap.remove(id);
     }
 
     @Override
     public Meal update(Meal meal) {
-        mealMap.put(meal.getId(), meal);
+        if (mealMap.containsKey(meal.getId())) {
+            mealMap.put(meal.getId(), meal);
+        } else {
+            add(meal);
+        }
         return meal;
     }
 

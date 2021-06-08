@@ -15,7 +15,7 @@ public class MealTo {
         this.description = description;
         this.calories = calories;
         this.excess = excess;
-           }
+    }
 
     public int getId() {
         return id;
