@@ -10,7 +10,6 @@ import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryMealRepository implements MealRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
-    private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
+    private final Map<Integer, Map<Integer, Meal>> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
@@ -33,49 +32,48 @@ public class InMemoryMealRepository implements MealRepository {
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             meal.setUserID(userId);
-            repository.put(meal.getId(), meal);
-            return meal;
+        } else if (get(meal.getId(), userId) == null) {
+            return null;
         }
-        meal.setUserID(userId);
-        return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        Map<Integer, Meal> userMeals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        userMeals.put(meal.getId(), meal);
+        return meal;
     }
 
     @Override
     public boolean delete(int id, int userId) {
         log.info("delete {}", id);
-        return isThisUserMeal(id, userId) && repository.remove(id) != null;
+        Map<Integer, Meal> userMeals = repository.get(userId);
+        return userMeals != null && userMeals.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
         log.info("get {}", id);
-        if (isThisUserMeal(id, userId)) {
-            return repository.get(id);
-        }
-        return null;
+        Map<Integer, Meal> userMeals = repository.get(userId);
+        return userMeals == null ? null : userMeals.get(id);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
         log.info("getAll");
-        return repository.values()
+        return repository.get(userId)
+                .values()
                 .stream()
-                .filter(meal -> meal.getUserID() == userId)
-                .sorted((o1, o2) -> o2.getDate().compareTo(o1.getDate()))
+                .sorted((o1, o2) -> o2.getDateTime().compareTo(o1.getDateTime()))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Meal> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int userId) {
         log.info("getFiltred");
-        return getAll(userId).stream()
+        return repository.get(userId)
+                .values()
+                .stream()
                 .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
                 .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate))
+                .sorted((o1, o2) -> o2.getDateTime().compareTo(o1.getDateTime()))
                 .collect(Collectors.toList());
-    }
-
-    private boolean isThisUserMeal(int id, int userId) {
-                return repository.get(id).getUserID() == userId;
     }
 }
 

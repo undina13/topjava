@@ -20,14 +20,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 
-
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
     private ConfigurableApplicationContext springContext;
     private MealRestController mealRestController;
 
     @Override
-    public void init() {
+    public void init() throws ServletException {
+        super.init();
         springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         mealRestController = springContext.getBean(MealRestController.class);
     }
@@ -44,7 +44,7 @@ public class MealServlet extends HttpServlet {
 
         String id = request.getParameter("id");
 
-        Meal meal = new Meal(StringUtils.hasLength(id) ?  Integer.valueOf(id) : null,
+        Meal meal = new Meal(StringUtils.hasLength(id) ? Integer.valueOf(id) : null,
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
                 Integer.parseInt(request.getParameter("calories")));
@@ -65,7 +65,6 @@ public class MealServlet extends HttpServlet {
         switch (action == null ? "all" : action) {
             case "filter":
                 log.info("Filtred list");
-
                 LocalDate startDate = request.getParameter("startDate").isEmpty() ?
                         LocalDate.MIN : LocalDate.parse(request.getParameter("startDate"));
                 LocalDate endDate = request.getParameter("endDate").isEmpty() ?
@@ -76,7 +75,7 @@ public class MealServlet extends HttpServlet {
                         LocalTime.MAX : LocalTime.parse(request.getParameter("endTime"));
 
                 request.setAttribute("meals", mealRestController.getFiltred(startDate, endDate, startTime, endTime));
-              request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
 
             case "delete":

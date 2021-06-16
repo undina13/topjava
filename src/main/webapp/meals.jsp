@@ -18,15 +18,16 @@
 </head>
 <body>
 <div>
-    <form method="post" action="meals?action=filter">
+    <form method="get" action="meals">
+        <input type="hidden" name="action" value="filter">
         <div>
             <div>
-                From time: <input type="time" name="startTime">
-                To time: <input type="time" name="endTime">
+                From time: <input type="time" value="${param.startTime}" name="startTime">
+                To time: <input type="time"  value="${param.endTime}" name="endTime">
             </div>
             <div>
-                From date: <input type="date" name="startDate">
-                To date: <input type="date" name="endDate">
+                From date: <input type="date" value="${param.startDate}" name="startDate">
+                To date: <input type="date" value="${param.endDate}" name="endDate">
             </div>
         </div>
         <button type="submit">Filter</button>

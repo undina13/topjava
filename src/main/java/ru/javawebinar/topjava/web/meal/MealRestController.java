@@ -52,6 +52,7 @@ public class MealRestController {
     }
 
     public List<MealTo> getFiltred(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+
         log.info("getFiltredMeal");
         return MealsUtil.getTos(service.getFiltered(startDate, endDate, startTime, endTime, SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay());
     }
