@@ -18,7 +18,5 @@ public static <T extends Comparable<T>> boolean isBetweenHalfOpen(T value, @Null
     public static String toString(LocalDateTime ldt) {
         return ldt == null ? "" : ldt.format(DATE_TIME_FORMATTER);
     }
-
-
 }
 
