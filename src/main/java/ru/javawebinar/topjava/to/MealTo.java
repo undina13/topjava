@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.to;
 import java.time.LocalDateTime;
 
 public class MealTo {
-
     private final Integer id;
     private final LocalDateTime dateTime;
     private final String description;
@@ -37,7 +36,6 @@ public class MealTo {
     public boolean isExcess() {
         return excess;
     }
-
 
     @Override
     public String toString() {

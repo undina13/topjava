@@ -64,7 +64,7 @@ public class InMemoryUserRepository implements UserRepository {
         log.info("getByEmail {}", email);
         return getAll()
                 .stream()
-                .filter(user -> user.getEmail().toLowerCase(Locale.ROOT).equals(email.toLowerCase(Locale.ROOT)))
+                .filter(user -> user.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);
     }

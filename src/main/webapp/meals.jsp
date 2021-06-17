@@ -31,7 +31,7 @@
             </div>
         </div>
         <button type="submit">Filter</button>
-        <button type="reset">Cancel</button>
+        <button onclick="window.history.back()" type="button">Cancel</button>
     </form>
 </div>
 <section>

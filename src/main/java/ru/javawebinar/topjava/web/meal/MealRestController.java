@@ -51,9 +51,9 @@ public class MealRestController {
         service.update(meal, SecurityUtil.authUserId());
     }
 
-    public List<MealTo> getFiltred(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
-
-        log.info("getFiltredMeal");
-        return MealsUtil.getFilteredTos(service.getFiltered(SecurityUtil.authUserId(), startDate, endDate), SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+    public List<MealTo> getFiltered(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        log.info("getFilteredMeal");
+        return MealsUtil.getFilteredTos(service.getFiltered(SecurityUtil.authUserId(), startDate, endDate),
+                SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
     }
 }

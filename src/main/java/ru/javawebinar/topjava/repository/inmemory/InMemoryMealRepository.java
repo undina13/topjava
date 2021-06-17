@@ -9,6 +9,8 @@ import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,12 +19,13 @@ import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
-    private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(InMemoryMealRepository.class);
     private final Map<Integer, Map<Integer, Meal>> repository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
         MealsUtil.meals.forEach(meal -> save(meal, 1));
+        save(new Meal(LocalDateTime.of(2021, Month.JANUARY, 30, 10, 0), "user meal", 500), 2);
     }
 
     @Override
@@ -30,7 +33,6 @@ public class InMemoryMealRepository implements MealRepository {
         log.info("save {}", meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-            meal.setUserID(userId);
         } else if (get(meal.getId(), userId) == null) {
             return null;
         }
@@ -69,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
         return repository.get(userId)
                 .values()
                 .stream()
-                .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate))
+                .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), startDate, endDate.plusDays(1)))
                 .sorted((o1, o2) -> o2.getDateTime().compareTo(o1.getDateTime()))
                 .collect(Collectors.toList());
     }
