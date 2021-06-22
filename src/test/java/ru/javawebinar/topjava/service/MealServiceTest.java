@@ -25,7 +25,8 @@ import static ru.javawebinar.topjava.UserTestData.*;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-db.xml",
+        "classpath:spring/spring-jdbc.xml"
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
@@ -116,16 +117,15 @@ public class MealServiceTest {
         Meal newMeal = MealTestData.getNew();
         Meal created = service.create(newMeal, ADMIN_ID);
         Integer newId = created.getId();
-        newMeal.setId(newId);
-        assertMatch(created, newMeal);
-        assertMatch(service.get(newId, ADMIN_ID), newMeal);
+        Meal lastNewMeal = MealTestData.getNew();
+        lastNewMeal.setId(newId);
+        assertMatch(created, lastNewMeal);
+        assertMatch(service.get(newId, ADMIN_ID), lastNewMeal);
     }
 
     @Test
     public void duplicateDateTimeCreate() {
         assertThrows(DataAccessException.class, () ->
-                service.create(new Meal(null,
-                        userMeal1.getDateTime(),
-                        "duplicateDateTime", 500), USER_ID));
+                service.create(new Meal(null, userMeal1.getDateTime(), "duplicateDateTime", 500), USER_ID));
     }
 }

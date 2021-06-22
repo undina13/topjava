@@ -19,7 +19,6 @@ public class MealTestData {
     public static final int USER_MEAL_ID_6 = USER_MEAL_ID_1 + 5;
     public static final int USER_MEAL_ID_7 = USER_MEAL_ID_1 + 6;
     public static final int ADMIN_MEAL_ID_1 = USER_MEAL_ID_1 + 7;
-
     public static final int ADMIN_MEAL_ID_2 = USER_MEAL_ID_1 + 8;
     public static final int NOT_FOUND_MEAL = 10;
 
@@ -53,7 +52,7 @@ public class MealTestData {
     }
 
     public static void assertMatch(Iterable<Meal> actual, Meal... expected) {
-        assertThat(actual).usingRecursiveFieldByFieldElementComparator().isEqualTo(Arrays.asList(expected));
+        assertMatch(actual, Arrays.asList(expected));
     }
 
     public static void assertMatch(Iterable<Meal> actual, Iterable<Meal> expected) {
