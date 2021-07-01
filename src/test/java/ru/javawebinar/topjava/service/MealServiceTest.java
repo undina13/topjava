@@ -6,9 +6,7 @@ import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Profiles;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
@@ -36,9 +34,11 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
     private static final Logger logger = Logger.getLogger(MealServiceTest.class.getSimpleName());
 
+    @Autowired
+    private MealService service;
     private static void logInfo(Description description, String status, long nanos) {
         String testName = description.getMethodName();
-        logger.info(String.format("Test %s %s, spent %d microseconds",
+        logger.info(String.format("Test %s %s, spent %d miliseconds",
                 testName, status, TimeUnit.NANOSECONDS.toMillis(nanos)));
     }
 
@@ -60,10 +60,7 @@ public class MealServiceTest {
         }
     };
 
-    @Autowired
-    private MealService service;
-
-    @Test
+      @Test
     public void delete() {
         service.delete(MEAL1_ID, USER_ID);
         assertThrows(NotFoundException.class, () -> service.get(MEAL1_ID, USER_ID));

@@ -16,8 +16,9 @@ import java.util.List;
 public class JpaMealRepository implements MealRepository {
     @PersistenceContext
     private EntityManager em;
-@Override
-@Transactional
+
+    @Override
+    @Transactional
     public Meal save(Meal meal, int userId) {
         meal.setUser(em.getReference(User.class, userId));
         if (meal.isNew()) {
@@ -39,14 +40,12 @@ public class JpaMealRepository implements MealRepository {
     }
 
     @Override
-    @Transactional
-      public Meal get(int id, int userId) {
+    public Meal get(int id, int userId) {
         Meal meal = em.find(Meal.class, id);
         return meal != null && meal.getUser().getId() == userId ? meal : null;
     }
 
     @Override
-    @Transactional
     public List<Meal> getAll(int userId) {
         return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
                 .setParameter("userId", userId)
@@ -54,7 +53,6 @@ public class JpaMealRepository implements MealRepository {
     }
 
     @Override
-    @Transactional
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         return em.createNamedQuery(Meal.ALL_BETWEEN, Meal.class)
                 .setParameter("userId", userId)
