@@ -24,28 +24,35 @@ public class User extends AbstractNamedEntity {
     public static final String DELETE = "User.delete";
     public static final String BY_EMAIL = "User.getByEmail";
     public static final String ALL_SORTED = "User.getAllSorted";
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     List<Meal> meals;
+
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotBlank
     @Size(max = 100)
     private String email;
+
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 100)
     private String password;
+
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
+
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     @NotNull
     private Date registered = new Date();
+
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_roles")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
     @Column(name = "calories_per_day", nullable = false, columnDefinition = "int default 2000")
     @Range(min = 10, max = 10000)
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;

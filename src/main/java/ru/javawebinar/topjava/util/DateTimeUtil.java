@@ -43,7 +43,7 @@ public class DateTimeUtil {
     }
 
     public static @Nullable
-  Timestamp parseToTimestamp(@Nullable LocalDateTime localDateTime) {
+    Timestamp parseToTimestamp(@Nullable LocalDateTime localDateTime) {
         return localDateTime == null ? null : Timestamp.valueOf(localDateTime);
     }
 }

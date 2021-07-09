@@ -16,7 +16,7 @@ public class PostgresJdbcMealRepository extends JdbcMealRepository {
     }
 
     @SuppressWarnings("unchecked")
-    protected LocalDateTime convertTime(LocalDateTime localDateTime) {
+    protected LocalDateTime convertDateTime(LocalDateTime localDateTime) {
         return localDateTime;
     }
 }

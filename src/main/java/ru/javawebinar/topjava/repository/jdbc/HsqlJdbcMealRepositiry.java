@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 
 @Repository
 @Profile(Profiles.HSQL_DB)
-public class HsqlJdbcMealRepozitiry extends JdbcMealRepository {
-    public HsqlJdbcMealRepozitiry(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+public class HsqlJdbcMealRepositiry extends JdbcMealRepository {
+    public HsqlJdbcMealRepositiry(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Timestamp convertTime(LocalDateTime localDateTime) {
+    protected Timestamp convertDateTime(LocalDateTime localDateTime) {
         return DateTimeUtil.parseToTimestamp(localDateTime);
     }
 }
