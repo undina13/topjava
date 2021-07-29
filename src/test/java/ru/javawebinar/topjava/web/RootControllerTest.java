@@ -8,6 +8,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
+import static ru.javawebinar.topjava.util.MealsUtil.getTos;
+import static ru.javawebinar.topjava.MealTestData.meals;
+
 
 class RootControllerTest extends AbstractControllerTest {
 
